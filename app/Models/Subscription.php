@@ -1,14 +1,17 @@
 <?php
+declare(strict_types=1);
 
 namespace App\Models;
 
+use App\Enums\SubscriptionStatus;
+use App\Traits\GymScoped;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Subscription extends Model
 {
-    use HasFactory;
+    use GymScoped, HasFactory;
 
     /**
      * The attributes that are mass assignable.
@@ -26,18 +29,16 @@ class Subscription extends Model
     ];
 
     /**
-     * Get the attributes that should be cast.
+     * The attributes that should be cast.
      *
-     * @return array<string, string>
+     * @var array<string, string>
      */
-    protected function casts(): array
-    {
-        return [
-            'start_date' => 'date',
-            'end_date' => 'date',
-            'price' => 'decimal:2',
-        ];
-    }
+    protected $casts = [
+        'start_date' => 'date',
+        'end_date' => 'date',
+        'price' => 'decimal:2',
+        'status' => SubscriptionStatus::class,
+    ];
 
     /**
      * Get the gym this subscription belongs to.
@@ -60,7 +61,7 @@ class Subscription extends Model
      */
     public function isActive(): bool
     {
-        return $this->status === 'active' && now()->between($this->start_date, $this->end_date);
+        return $this->status === SubscriptionStatus::active && now()->between($this->start_date, $this->end_date);
     }
 
     /**

@@ -19,8 +19,7 @@ return new class extends Migration
             $table->timestamp('check_out_time')->nullable();
             $table->timestamps();
 
-            $table->index('gym_id');
-            $table->index('member_id');
+            $table->index(['member_id', 'check_in_time']);
         });
     }
 

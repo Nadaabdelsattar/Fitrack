@@ -1,15 +1,21 @@
 <?php
+declare(strict_types=1);
 
 namespace App\Models;
 
+use App\Enums\Gender;
+use App\Enums\MemberStatus;
+use App\Enums\SubscriptionStatus;
+use App\Traits\GymScoped;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 
 class Member extends Model
 {
-    use HasFactory;
+    use GymScoped, HasFactory;
 
     /**
      * The attributes that are mass assignable.
@@ -27,16 +33,15 @@ class Member extends Model
     ];
 
     /**
-     * Get the attributes that should be cast.
+     * The attributes that should be cast.
      *
-     * @return array<string, string>
+     * @var array<string, string>
      */
-    protected function casts(): array
-    {
-        return [
-            'date_of_birth' => 'date',
-        ];
-    }
+    protected $casts = [
+        'date_of_birth' => 'date',
+        'gender' => Gender::class,
+        'status' => MemberStatus::class,
+    ];
 
     /**
      * Get the gym this member belongs to.
@@ -73,8 +78,8 @@ class Member extends Model
     /**
      * Get the active subscription for this member (if any).
      */
-    public function activeSubscription(): \Illuminate\Database\Eloquent\Relations\HasOne
+    public function activeSubscription(): HasOne
     {
-        return $this->hasOne(Subscription::class)->where('status', 'active');
+        return $this->hasOne(Subscription::class)->where('status', SubscriptionStatus::active->value);
     }
 }

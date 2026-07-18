@@ -21,8 +21,7 @@ return new class extends Migration
             $table->text('notes')->nullable();
             $table->timestamps();
 
-            $table->index('gym_id');
-            $table->index('member_id');
+            $table->index('paid_at');
         });
     }
 

@@ -1,14 +1,17 @@
 <?php
+declare(strict_types=1);
 
 namespace App\Models;
 
+use App\Enums\PaymentMethod;
+use App\Traits\GymScoped;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Payment extends Model
 {
-    use HasFactory;
+    use GymScoped, HasFactory;
 
     /**
      * The attributes that are mass assignable.
@@ -25,17 +28,15 @@ class Payment extends Model
     ];
 
     /**
-     * Get the attributes that should be cast.
+     * The attributes that should be cast.
      *
-     * @return array<string, string>
+     * @var array<string, string>
      */
-    protected function casts(): array
-    {
-        return [
-            'paid_at' => 'datetime',
-            'amount' => 'decimal:2',
-        ];
-    }
+    protected $casts = [
+        'paid_at' => 'datetime',
+        'amount' => 'decimal:2',
+        'payment_method' => PaymentMethod::class,
+    ];
 
     /**
      * Get the gym this payment belongs to.

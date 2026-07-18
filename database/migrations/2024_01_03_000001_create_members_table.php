@@ -15,14 +15,15 @@ return new class extends Migration
             $table->id();
             $table->foreignId('gym_id')->constrained('gyms')->cascadeOnDelete();
             $table->string('name');
-            $table->string('email')->unique();
+            $table->string('email');
             $table->string('phone');
             $table->enum('gender', ['male', 'female', 'other']);
             $table->date('date_of_birth');
             $table->enum('status', ['active', 'inactive'])->default('active');
             $table->timestamps();
 
-            $table->index('gym_id');
+            $table->unique(['gym_id', 'email']);
+            $table->unique(['gym_id', 'phone']);
         });
     }
 

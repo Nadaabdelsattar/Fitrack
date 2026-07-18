@@ -1,14 +1,16 @@
 <?php
+declare(strict_types=1);
 
 namespace App\Models;
 
+use App\Traits\GymScoped;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Attendance extends Model
 {
-    use HasFactory;
+    use GymScoped, HasFactory;
 
     /**
      * The attributes that are mass assignable.
@@ -23,17 +25,14 @@ class Attendance extends Model
     ];
 
     /**
-     * Get the attributes that should be cast.
+     * The attributes that should be cast.
      *
-     * @return array<string, string>
+     * @var array<string, string>
      */
-    protected function casts(): array
-    {
-        return [
-            'check_in_time' => 'datetime',
-            'check_out_time' => 'datetime',
-        ];
-    }
+    protected $casts = [
+        'check_in_time' => 'datetime',
+        'check_out_time' => 'datetime',
+    ];
 
     /**
      * Get the gym this attendance belongs to.

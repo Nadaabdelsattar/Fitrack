@@ -19,9 +19,6 @@ return new class extends Migration
             $table->integer('capacity')->nullable();
             $table->time('schedule_time')->nullable();
             $table->timestamps();
-
-            $table->index('gym_id');
-            $table->index('trainer_id');
         });
     }
 

@@ -22,8 +22,7 @@ return new class extends Migration
             $table->decimal('price', 10, 2);
             $table->timestamps();
 
-            $table->index('gym_id');
-            $table->index('member_id');
+            $table->index(['gym_id', 'status']);
         });
     }
 
